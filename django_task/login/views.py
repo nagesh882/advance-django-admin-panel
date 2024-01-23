@@ -1,7 +1,8 @@
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render,redirect
 from login.models import Register
 import random
 from django.core.mail import send_mail
+from django.contrib.auth import logout
 
 def generate_otp():
     return str(random.randint(100000, 999999))
@@ -12,13 +13,11 @@ def register(request):
         'correct':correct
     }
     if request.method == "POST":
-        user_id = request.POST.get('user_id')
         user_name = request.POST.get('user_name')
         user_email = request.POST.get('user_email')
         user_phone = request.POST.get('user_phone')
         user_dob = request.POST.get('user_dob')
         data = Register(
-            user_id = user_id,
             user_name = user_name,
             user_email = user_email,
             user_phone = user_phone,
@@ -81,3 +80,15 @@ def HomePage(request):
 
 def indexPage(request):
     return render(request, 'index.html')
+
+
+def user_logout(request):
+    logout(request)
+
+    if 'OTP' in request.session:
+        del request.session['OTP']
+
+    if 'user_email' in request.session:
+        del request.session['user_email']
+
+    return redirect('login')
