@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="card mt-5 mx-auto">
+    <div class="card-title">
+        <h2 class="text-center text-success my-3">Login page</h2>
+        <div class="card-body">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="container my-3 py-0 class_message_use" id="message">
+                <div {% if message.tags %} class="alert alert-danger alert-{{ message.tags }} alert-dismissible fade show"{% endif %} role="alert">
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <strong>Important: </strong>
+                    {% endif %}
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+            <form action="{% url 'otp_verify' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="text-dark">OTP</label>
+                        <input type="text" class="form-control" name="OTP" placeholder="Enter Valid OTP">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mx-auto mt-3 form-control">Verify OTP</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

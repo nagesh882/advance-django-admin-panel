@@ -3,9 +3,11 @@ from login.models import Register
 import random
 from django.core.mail import send_mail
 from django.contrib.auth import logout
+from django.contrib import messages
 
 def generate_otp():
     return str(random.randint(100000, 999999))
+
 
 def register(request):
     correct = Register.objects.all()
@@ -26,20 +28,7 @@ def register(request):
 
         data.save()
 
-        
-        OTP = generate_otp()
-        email_subject = 'Your Login OTP'
-        email_message =  f'User {user_name} has been authenticated, please use the following One Time Password(OTP) for Login\n\n{OTP}'
-        send_mail(
-            email_subject,
-            email_message,
-            '{{user_email}}',
-            [user_email],
-            fail_silently=False,
-        )
 
-        request.session['OTP'] = OTP
-        request.session['user_email'] = user_email
         
         return redirect('login')
 
@@ -48,38 +37,57 @@ def register(request):
 
 def login(request):
     context ={}
-    if request.method == 'POST':
 
+    if request.method == 'POST':
+        enter_email = request.POST.get('enter_email')
+
+        try:
+            user = Register.objects.get(user_email=enter_email)
+        except Register.DoesNotExist:
+            messages.error(request, 'Please enter valid email!')
+            return redirect('login')
+
+        context = {
+            'enter_email': enter_email,
+            'user_email': user.user_email,
+        }
+
+        OTP = generate_otp()
+        email_subject = 'This Message For OTP Authentication'
+        email_message =  f'Use the following One Time Password(OTP) for Login.....\n\n{OTP}'
+        send_mail(
+            email_subject,
+            email_message,
+            '{{user_email}}',
+            [enter_email],
+            fail_silently=False,
+        )
+
+        request.session['OTP'] = OTP
+        request.session['enter_email'] = enter_email
+
+        return redirect('otp_verify')
+
+    return render(request, "login.html",context)
+
+
+def otp_verify(request):
+    if request.method == "POST":
         user_entered_otp = request.POST.get('OTP')
 
         stored_otp = request.session.get('OTP')
 
-        print(stored_otp)
-
-        email_store = request.session.get('user_email')
-
-        print(email_store)
-
         if user_entered_otp == stored_otp :
-
-            data = Register.objects.filter(user_email=email_store)
-            print(data)
-
             return redirect("HomePage")
-        
-        context = {
-            'user_entered_otp':user_entered_otp,
-            'email_store':email_store
-        }
-     
-    return render(request, "login.html",context)
+        else:
+            messages.error(request, 'Please enter valid OTP!')
+            return redirect('otp_verify')
+
+    return render(request, 'otp_verfication.html')
 
 
 def HomePage(request):
     return render(request, 'HomePage.html')
-
-def indexPage(request):
-    return render(request, 'index.html')
 
 
 def user_logout(request):
@@ -92,3 +100,12 @@ def user_logout(request):
         del request.session['user_email']
 
     return redirect('login')
+
+
+def profile(request):
+    all_data = Register.objects.all()
+    context = {
+        'all_data': all_data
+    }
+    print(all_data)
+    return render(request, 'profile.html', context)
