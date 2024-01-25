@@ -19,11 +19,32 @@ def register(request):
         user_email = request.POST.get('user_email')
         user_phone = request.POST.get('user_phone')
         user_dob = request.POST.get('user_dob')
+        gender = request.POST.get('gender')
+        aadhar = request.POST.get('aadhar')
+        pan = request.POST.get('pan')
+        marital_status = request.POST.get('marital_status')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        district = request.POST.get('district')
+        state = request.POST.get('state')
+        country = request.POST.get('country')
+        pin_code = request.POST.get('pin_code')
+
         data = Register(
             user_name = user_name,
             user_email = user_email,
             user_phone = user_phone,
             user_dob = user_dob,
+            gender = gender,
+            aadhar = aadhar,
+            pan = pan,
+            marital_status = marital_status,
+            address = address,
+            city = city,
+            district = district,
+            state = state,
+            country = country,
+            pin_code = pin_code
         )
 
         data.save()
@@ -78,7 +99,7 @@ def otp_verify(request):
         stored_otp = request.session.get('OTP')
 
         if user_entered_otp == stored_otp :
-            return redirect("HomePage")
+            return redirect("home_page")
         else:
             messages.error(request, 'Please enter valid OTP!')
             return redirect('otp_verify')
@@ -86,7 +107,8 @@ def otp_verify(request):
     return render(request, 'otp_verfication.html')
 
 
-def HomePage(request):
+def home_page(request):
+
     return render(request, 'HomePage.html')
 
 
@@ -102,10 +124,59 @@ def user_logout(request):
     return redirect('login')
 
 
-def profile(request):
-    all_data = Register.objects.all()
-    context = {
-        'all_data': all_data
-    }
-    print(all_data)
-    return render(request, 'profile.html', context)
+def update(request,user_id):
+    if request.method=="POST":
+        user_name = request.POST.get('user_name')
+        user_email = request.POST.get('user_email')
+        user_phone = request.POST.get('user_phone')
+        gender = request.POST.get('gender')
+        aadhar = request.POST.get('aadhar')
+        pan = request.POST.get('pan')
+        marital_status = request.POST.get('marital_status')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        district = request.POST.get('district')
+        state = request.POST.get('state')
+        country = request.POST.get('country')
+        pin_code = request.POST.get('pin_code')
+        user_dob = request.POST.get('user_dob')
+
+        Data = Register(
+            user_id=user_id,
+            user_dob=user_dob,
+            user_name =user_name,
+            user_email =user_email,
+            user_phone =user_phone,
+            gender =gender,
+            aadhar =aadhar,
+            pan =pan,
+            marital_status =marital_status,
+            address =address,
+            city =city,
+            district =district,
+            state =state,
+            country =country,
+            pin_code =pin_code
+                
+        )
+        Data.save()
+        return redirect('edit')
+    
+    return render(request, 'profile.html',{'Data':Data})
+
+
+def web_base(request, user_id):
+    user = Register.objects.get(user_id=user_id)
+    return render(request, 'web_base.html', {'user_name': user.user_name})
+
+
+def edit(request):
+
+    edit = Register.objects.all()
+
+    return render(request, 'view_profile.html', {'edit':edit})
+
+def update_data(request):
+    update_data = Register.objects.all()
+    return render(request, 'profile.html', {'update_data':update_data})
+
