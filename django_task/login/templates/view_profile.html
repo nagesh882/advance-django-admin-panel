@@ -8,7 +8,7 @@
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 my-3 text-gray-800">View Profile</h1>
-            <a href="{% url 'update_data' %}" class="btn btn-primary my-3">Update Profile</a>
+            <a href="{% url 'update_data' user_id=request.user.id %}" class="btn btn-primary my-3">Update Profile</a>
         </div>
 
         <div class="row">
@@ -16,7 +16,7 @@
             <div class="col-12 mt-5">
                 <div class="card">
                     <div class="card-body">
-                        {% for edit in edit %}
+                        {% comment %} {% for edit in edit %} {% endcomment %}
                         <div class="form-row">
                             <div class="form-group col-lg-4">
                                 <label class="text-dark">Name</label>
@@ -83,7 +83,7 @@
                                 <input type="text" class="form-control"  value="{{edit.pin_code}}">
                             </div>
                         </div>
-                        {% endfor %}
+                        {% comment %} {% endfor %} {% endcomment %}
                     </div>
                 </div>
             </div>

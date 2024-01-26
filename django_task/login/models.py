@@ -2,7 +2,7 @@ from django.db import models
 import datetime
 # Create your models here.
 class Register(models.Model):
-    user_id = models.AutoField(primary_key=True, unique=True)
+    user_id = models.AutoField(primary_key=True)
     user_name = models.CharField(max_length=100)
     user_email = models.EmailField(max_length=100)
     user_phone = models.CharField(max_length=50)

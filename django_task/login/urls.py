@@ -9,7 +9,8 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('update/<int:user_id>', views.update, name="update"),
     path('web_base/<int:user_id>', views.web_base, name='web_base'),
-    path('edit/', views.edit, name='edit'),
-    path('update_data/', views.update_data, name='update_data'),
+    path('edit/<int:user_id>/', views.edit, name='edit'),
+    path('update_data/<int:user_id>/', views.update_data, name='update_data'),
+
 
 ]

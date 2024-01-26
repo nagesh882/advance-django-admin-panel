@@ -5,7 +5,7 @@
 
 
 <div class="container-fluid">
-    {% for update_data in update_data %}
+    {% comment %} {% for update_data in update_data %} {% endcomment %}
     <form method="POST" action="/update/{{update_data.user_id}}">
         {% csrf_token %}
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -89,7 +89,7 @@
             </div>
         </div>
     </form>
-    {% endfor %}
+    {% comment %} {% endfor %} {% endcomment %}
 </div>
 
 

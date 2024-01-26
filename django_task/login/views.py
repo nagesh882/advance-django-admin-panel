@@ -160,7 +160,7 @@ def update(request,user_id):
                 
         )
         Data.save()
-        return redirect('edit')
+        return redirect('edit', user_id=user_id)
     
     return render(request, 'profile.html',{'Data':Data})
 
@@ -170,13 +170,21 @@ def web_base(request, user_id):
     return render(request, 'web_base.html', {'user_name': user.user_name})
 
 
-def edit(request):
+# def edit(request, user_id=None):
+#     if user_id is not None:
+#         edit = Register.objects.get(user_id=user_id)
+#         return render(request, 'view_profile.html', {'edit': edit})
+#     else:
+#         print('Page Not Found')
 
-    edit = Register.objects.all()
 
-    return render(request, 'view_profile.html', {'edit':edit})
 
-def update_data(request):
-    update_data = Register.objects.all()
-    return render(request, 'profile.html', {'update_data':update_data})
+def edit(request, user_id):
+    edit_instance = Register.objects.get(user_id=user_id)
+    return render(request, 'view_profile.html', {'edit': edit_instance})
+
+
+def update_data(request,user_id):
+    update_data_instance = Register.objects.get(user_id=user_id)
+    return render(request, 'profile.html', {'update_data':update_data_instance})
 
