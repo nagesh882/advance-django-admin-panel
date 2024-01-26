@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from login.models import Register
+from login.models import Register, Products
 import random
 from django.core.mail import send_mail
 from django.contrib.auth import logout
@@ -188,3 +188,73 @@ def update_data(request,user_id):
     update_data_instance = Register.objects.get(user_id=user_id)
     return render(request, 'profile.html', {'update_data':update_data_instance})
 
+
+
+def product(request):
+    product_details = Products.objects.all()
+    context = {
+        'products':product_details
+    }
+    print(context['products'])
+    return render(request, 'products/products.html', context)
+
+
+def ADD(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+        phone = request.POST.get('phone')
+
+        emp = Employees(
+            name = name,
+            email = email,
+            address = address,
+            phone = phone
+        )
+        emp.save()
+        return redirect('home')
+
+    return render(request, 'index.html')
+
+def EDIT(request):
+
+    emp = Employees.objects.all()
+
+    context = {
+
+        'emp':emp,
+    
+    }
+
+    return redirect(request, 'index.html', context)
+
+
+def Update(request, id):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+        phone = request.POST.get('phone')
+
+        emp = Employees(
+            id = id,
+            name = name,
+            email = email,
+            address = address,
+            phone = phone
+        )
+        emp.save()
+        return redirect('home')
+
+    return redirect(request, 'index.html')
+
+def Delete(request, id):
+    emp = Employees.objects.filter(id = id)
+    
+    emp.delete()
+    
+    context = {
+        'emp':emp,
+    }
+    return redirect('home')

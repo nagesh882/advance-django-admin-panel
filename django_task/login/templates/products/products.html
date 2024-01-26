@@ -1,0 +1,52 @@
+{% extends 'web_base.html' %}
+{% load static %}
+
+{% block content_page %}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Products Page</h1>
+    </div>
+
+    <div class="row">
+
+        <div class="col-12 mt-5">
+            <h1 class="text-success h1 text-center">Welcome to Products Page....</h1>
+
+            <table class="table table-bordere-less table-responsive-sm text-sm-start">
+                <thead>
+                    <tr class="table-primary text-dark">
+                        <th>Product Id</th>
+                        <th>Product Name</th>
+                        <th>HSN Code</th>
+                        <th>Manufacture Date</th>
+                        <th>Expiry Date</th>
+                        <th>Created Date</th>
+                        <th>Updated Date</th>
+                        <th>Created By</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Product Id</td>
+                        <td>Product Name</td>
+                        <td>HSN Code</td>
+                        <td>Manufacture Date</td>
+                        <td>Expiry Date</td>
+                        <td>Created Date</td>
+                        <td>Updated Date</td>
+                        <td>Created By</td>
+                        <td>
+                            <a type="button"><i class="fa fa-pencil" aria-hidden="true"></i></a> &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a type="button" ><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

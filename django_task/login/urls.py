@@ -11,6 +11,9 @@ urlpatterns = [
     path('web_base/<int:user_id>', views.web_base, name='web_base'),
     path('edit/<int:user_id>/', views.edit, name='edit'),
     path('update_data/<int:user_id>/', views.update_data, name='update_data'),
+    path('product/', views.product, name='product'),
+
+    
 
 
 ]
