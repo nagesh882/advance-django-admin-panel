@@ -190,6 +190,68 @@ def update_data(request,user_id):
 
 
 
+# def ADD(request):
+#     if request.method == 'POST':
+#         name = request.POST.get('name')
+#         email = request.POST.get('email')
+#         address = request.POST.get('address')
+#         phone = request.POST.get('phone')
+
+#         emp = Employees(
+#             name = name,
+#             email = email,
+#             address = address,
+#             phone = phone
+#         )
+#         emp.save()
+#         return redirect('home')
+
+#     return render(request, 'index.html')
+
+# def EDIT(request):
+
+#     emp = Employees.objects.all()
+
+#     context = {
+
+#         'emp':emp,
+    
+#     }
+
+#     return redirect(request, 'index.html', context)
+
+
+# def Update(request, id):
+#     if request.method == 'POST':
+#         name = request.POST.get('name')
+#         email = request.POST.get('email')
+#         address = request.POST.get('address')
+#         phone = request.POST.get('phone')
+
+#         emp = Employees(
+#             id = id,
+#             name = name,
+#             email = email,
+#             address = address,
+#             phone = phone
+#         )
+#         emp.save()
+#         return redirect('home')
+
+#     return redirect(request, 'index.html')
+
+# def Delete(request, id):
+#     emp = Employees.objects.filter(id = id)
+    
+#     emp.delete()
+    
+#     context = {
+#         'emp':emp,
+#     }
+#     return redirect('home')
+
+
+
 def product(request):
     product_details = Products.objects.all()
     context = {
@@ -199,62 +261,76 @@ def product(request):
     return render(request, 'products/products.html', context)
 
 
-def ADD(request):
+def product_update(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        address = request.POST.get('address')
-        phone = request.POST.get('phone')
+        pass
+    return render(request, 'products/product_update.html')
 
-        emp = Employees(
-            name = name,
-            email = email,
-            address = address,
-            phone = phone
-        )
-        emp.save()
-        return redirect('home')
 
-    return render(request, 'index.html')
 
-def EDIT(request):
+# def product_create(request):
+#     create_product = Products.objects.all()
+#     context = {
+#         'create_product':create_product
+#     }
+#     if request.method == 'POST':
+#         product_name = request.POST.get('product_name')
+#         product_price = request.POST.get('product_price')
+#         hsn_code = request.POST.get('hsn_code')
+#         manufacture_date = request.POST.get('manufacture_date')
+#         expiry_date = request.POST.get('expiry_date')
+#         created_datetime = request.POST.get('created_datetime')
+#         updated_datetime = request.POST.get('updated_datetime')
 
-    emp = Employees.objects.all()
 
-    context = {
-
-        'emp':emp,
+#         save_product = Products(
+#             product_name = product_name,
+#             product_price = product_price,
+#             hsn_code = hsn_code,
+#             manufacture_date = manufacture_date,
+#             expiry_date = expiry_date,
+#             created_datetime = created_datetime,
+#             updated_datetime = updated_datetime
+#         )
+#         save_product.save()
+        
+#         return redirect('product')
     
-    }
-
-    return redirect(request, 'index.html', context)
+#     return render(request, 'products/product_create.html',context)
 
 
-def Update(request, id):
+def product_create(request):
+    create_product = Products.objects.all()
+    
     if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        address = request.POST.get('address')
-        phone = request.POST.get('phone')
+        product_name = request.POST.get('product_name')
+        product_price = request.POST.get('product_price')
+        hsn_code = request.POST.get('hsn_code')
+        manufacture_date = request.POST.get('manufacture_date')
+        expiry_date = request.POST.get('expiry_date')
+        created_datetime = request.POST.get('created_datetime')
+        updated_datetime = request.POST.get('updated_datetime')
 
-        emp = Employees(
-            id = id,
-            name = name,
-            email = email,
-            address = address,
-            phone = phone
+        new_product = Products(
+            product_name=product_name,
+            product_price=product_price,
+            hsn_code=hsn_code,
+            manufacture_date=manufacture_date,
+            expiry_date=expiry_date,
+            created_datetime=created_datetime,
+            updated_datetime=updated_datetime,
         )
-        emp.save()
-        return redirect('home')
+        new_product.save()
+        return redirect('product') 
 
-    return redirect(request, 'index.html')
+    return render(request, 'products/product_create.html',{'create_product':create_product})
 
-def Delete(request, id):
-    emp = Employees.objects.filter(id = id)
-    
-    emp.delete()
-    
-    context = {
-        'emp':emp,
-    }
-    return redirect('home')
+
+
+
+
+# def delete2(request, id):
+#     if request.method=="POST":
+#         data2 = manage_student.objects.filter(id=id)
+#         data2.delete()
+#         return redirect("index2") 

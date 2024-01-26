@@ -1,0 +1,62 @@
+{% extends 'web_base.html' %}
+{% load static %}
+
+{% block content_page %}
+
+<div class="container-fluid">
+    <form method="" action="">
+        {% csrf_token %}
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 my-3 text-gray-800">Update Product</h1>
+            <button type="submit" class="btn btn-primary my-3">Update Product</button>
+        </div>
+
+        <div class="row">
+
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col-lg-4">
+                                <label class="text-dark">Product Name</label>
+                                <input type="text" class="form-control" name="product_name" placeholder="Enter product Name">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label class="text-dark">Product Price</label>
+                                <input type="text" class="form-control" name="product_price" placeholder="Enter HSN Code">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label class="text-dark">HSN Code</label>
+                                <input type="text" class="form-control" name="hsn_code" placeholder="Enter HSN Code">
+                            </div>
+                            
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-4">
+                                <label class="text-dark">Manufacture Date</label>
+                                <input type="date" class="form-control" name="manufacture_date">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label class="text-dark">Expiry Date</label>
+                                <input type="date" class="form-control" name="expiry_date">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label class="text-dark">Created Date</label>
+                                <input type="date" class="form-control" name="created_datetime">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-4">
+                                <label class="text-dark">Updated Date</label>
+                                <input type="date" class="form-control" name="updated_datetime">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}
