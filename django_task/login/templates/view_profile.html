@@ -5,10 +5,10 @@
 
 
 <div class="container-fluid">
-
+        {% for i in data %}
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 my-3 text-gray-800">View Profile</h1>
-            <a href="{% url 'update_data' user_id=request.user.id %}" class="btn btn-primary my-3">Update Profile</a>
+            <a href="/update/{{i.user_id}}/" class="btn btn-primary my-3">Update Profile</a>
         </div>
 
         <div class="row">
@@ -16,78 +16,77 @@
             <div class="col-12 mt-5">
                 <div class="card">
                     <div class="card-body">
-                        {% comment %} {% for edit in edit %} {% endcomment %}
                         <div class="form-row">
                             <div class="form-group col-lg-4">
                                 <label class="text-dark">Name</label>
-                                <input type="text" class="form-control"  value="{{edit.user_name}}"> 
+                                <input type="text" class="form-control"  value="{{i.user_name}}"> 
                             </div>
                             <div class="form-group col-lg-4">
                                 <label class="text-dark">Email</label>
-                                <input type="text" class="form-control"  value="{{edit.user_email}}">
+                                <input type="text" class="form-control"  value="{{i.user_email}}">
                             </div>
                             <div class="form-group col-lg-4">
                                 <label class="text-dark">Mobile</label>
-                                <input type="text" class="form-control"  value="{{edit.user_phone}}">
+                                <input type="text" class="form-control"  value="{{i.user_phone}}">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-lg-4">
                                 <label class="text-dark">Date of Birth</label>
-                                <input type="text" class="form-control"  value='{{edit.user_dob}}'>
+                                <input type="text" class="form-control"  value='{{i.user_dob}}'>
                             </div>
                             <div class="form-group col-lg-4">
                                 <label class="text-dark">Gender</label>
-                                <input type="text" class="form-control"  value="{{edit.gender}}">
+                                <input type="text" class="form-control"  value="{{i.gender}}">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-lg-4">
                                 <label class="text-dark">Aadhar Card</label>
-                                <input type="text" class="form-control"  value="{{edit.aadhar}}">
+                                <input type="text" class="form-control"  value="{{i.aadhar}}">
                             </div>
                             <div class="form-group col-lg-4">
                                 <label class="text-dark">Pan Card</label>
-                                <input type="text" class="form-control" value="{{edit.pan}}">
+                                <input type="text" class="form-control" value="{{i.pan}}">
                             </div>
                             <div class="form-group col-lg-4">
                                 <label class="text-dark">Marital Status</label>
-                                <input type="text" class="form-control"  value="{{edit.marital_status}}">
+                                <input type="text" class="form-control"  value="{{i.marital_status}}">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-lg-4">
                                 <label class="text-dark">Address</label>
-                                <input type="text" class="form-control" value="{{edit.address}}">
+                                <input type="text" class="form-control" value="{{i.address}}">
                             </div>
                             <div class="form-group col-lg-4">
                                 <label class="text-dark">City</label>
-                                <input type="text" class="form-control" value="{{edit.city}}">
+                                <input type="text" class="form-control" value="{{i.city}}">
                             </div>
                             <div class="form-group col-lg-4">
                                 <label class="text-dark">District</label>
-                                <input type="text" class="form-control" value="{{edit.district}}">
+                                <input type="text" class="form-control" value="{{i.district}}">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-lg-4">
                                 <label class="text-dark">State</label>
-                                <input type="text" class="form-control"  value="{{edit.state}}">
+                                <input type="text" class="form-control"  value="{{i.state}}">
                             </div>
                             <div class="form-group col-lg-4">
                                 <label class="text-dark">Country</label>
-                                <input type="text" class="form-control"  value="{{edit.country}}">
+                                <input type="text" class="form-control"  value="{{i.country}}">
                             </div>
                             <div class="form-group col-lg-4">
                                 <label class="text-dark">PIN code</label>
-                                <input type="text" class="form-control"  value="{{edit.pin_code}}">
+                                <input type="text" class="form-control"  value="{{i.pin_code}}">
                             </div>
                         </div>
-                        {% comment %} {% endfor %} {% endcomment %}
                     </div>
                 </div>
             </div>
         </div>
+        {% endfor %}
 </div>
 
 

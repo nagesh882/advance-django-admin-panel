@@ -91,11 +91,17 @@ def login(request):
 def otp_verify(request):
     if request.method == "POST":
         user_entered_otp = request.POST.get('OTP')
-
+        email_store = request.session.get('enter_email')
+        print(email_store)
         stored_otp = request.session.get('OTP')
 
         if user_entered_otp == stored_otp :
-            return redirect("home_page")
+            data = Register.objects.filter(user_email=email_store)
+            print(data)
+            context = {'data':data}
+            if len(data) is not 0:
+                print('yes')
+                return render(request,'view_profile.html',context)
         else:
             messages.error(request, 'Please enter valid OTP!')
             return redirect('otp_verify')
@@ -104,8 +110,15 @@ def otp_verify(request):
 
 
 def home_page(request):
+    email_store = request.session.get('enter_email')
+    print(email_store)
 
-    return render(request, 'HomePage.html')
+    data = Register.objects.filter(user_email=email_store)
+    print(data)
+    context = {'data':data}
+    if len(data) is not 0:
+        print('yes')
+        return render(request, 'HomePage.html',context)
 
 
 def user_logout(request):
@@ -121,6 +134,7 @@ def user_logout(request):
 
 
 def update(request,user_id):
+    data = Register.objects.get(user_id=user_id)
     if request.method=="POST":
         user_name = request.POST.get('user_name')
         user_email = request.POST.get('user_email')
@@ -156,97 +170,34 @@ def update(request,user_id):
                 
         )
         Data.save()
-        return redirect('edit', user_id=user_id)
+        return redirect('view_profile')
     
-    return render(request, 'profile.html',{'Data':Data})
-
-
-def web_base(request, user_id):
-    user = Register.objects.get(user_id=user_id)
-    return render(request, 'web_base.html', {'user_name': user.user_name})
-
-
-# def edit(request, user_id=None):
-#     if user_id is not None:
-#         edit = Register.objects.get(user_id=user_id)
-#         return render(request, 'view_profile.html', {'edit': edit})
-#     else:
-#         print('Page Not Found')
+    return render(request, 'profile.html',{'data':data})
 
 
 
-def edit(request, user_id):
-    edit_instance = Register.objects.get(user_id=user_id)
-    return render(request, 'view_profile.html', {'edit': edit_instance})
+def web_base(request):
+    email_store = request.session.get('enter_email')
+    print(email_store)
+
+    data = Register.objects.filter(user_email=email_store)
+    print(data)
+    context = {'data':data}
+    if len(data) is not 0:
+        print('yes')
+        return render(request, 'web_base.html', context)
 
 
-def update_data(request,user_id):
-    update_data_instance = Register.objects.get(user_id=user_id)
-    return render(request, 'profile.html', {'update_data':update_data_instance})
+def view_profile(request):
+    email_store = request.session.get('enter_email')
+    print(email_store)
 
-
-
-# def ADD(request):
-#     if request.method == 'POST':
-#         name = request.POST.get('name')
-#         email = request.POST.get('email')
-#         address = request.POST.get('address')
-#         phone = request.POST.get('phone')
-
-#         emp = Employees(
-#             name = name,
-#             email = email,
-#             address = address,
-#             phone = phone
-#         )
-#         emp.save()
-#         return redirect('home')
-
-#     return render(request, 'index.html')
-
-# def EDIT(request):
-
-#     emp = Employees.objects.all()
-
-#     context = {
-
-#         'emp':emp,
-    
-#     }
-
-#     return redirect(request, 'index.html', context)
-
-
-# def Update(request, id):
-#     if request.method == 'POST':
-#         name = request.POST.get('name')
-#         email = request.POST.get('email')
-#         address = request.POST.get('address')
-#         phone = request.POST.get('phone')
-
-#         emp = Employees(
-#             id = id,
-#             name = name,
-#             email = email,
-#             address = address,
-#             phone = phone
-#         )
-#         emp.save()
-#         return redirect('home')
-
-#     return redirect(request, 'index.html')
-
-# def Delete(request, id):
-#     emp = Employees.objects.filter(id = id)
-    
-#     emp.delete()
-    
-#     context = {
-#         'emp':emp,
-#     }
-#     return redirect('home')
-
-
+    data = Register.objects.filter(user_email=email_store)
+    print(data)
+    context = {'data':data}
+    if len(data) is not 0:
+        print('yes')
+        return render(request,'view_profile.html',context)
 
 
 def product_update(request,product_id):
@@ -261,7 +212,6 @@ def product_update(request,product_id):
         created_datetime = request.POST.get('created_datetime')
         updated_datetime = request.POST.get('updated_datetime')
         created_by_id = request.POST.get('created_by')
-        # create = Register.objects.get(id=created_by_id)
         create = Register.objects.get(user_id=created_by_id)
 
         new_product = Products(
@@ -285,9 +235,7 @@ def product_update(request,product_id):
         
     return render(request, 'products/product_update.html',context)
 
-# def product_update(request,product_id):
-#     correct = Products.objects.get(product_id=product_id)
-#     return render(request, 'products/product_update.html',{'correct':correct})
+
 
 def product_create(request):
     create_product = Products.objects.all()
@@ -301,7 +249,6 @@ def product_create(request):
         created_datetime = request.POST.get('created_datetime')
         updated_datetime = request.POST.get('updated_datetime')
         created_by_id = request.POST.get('created_by')
-        # create = Register.objects.get(id=created_by_id)
         create = Register.objects.get(user_id=created_by_id)
 
         new_product = Products(
@@ -321,14 +268,27 @@ def product_create(request):
 
 
 
+# def product(request):
+#     product_details = Products.objects.all()
+
+#     print(product_details)
+#     return render(request, 'products/products.html',{'products':product_details})
+
 def product(request):
     product_details = Products.objects.all()
+    email_store = request.session.get('enter_email')
+    print(email_store)
 
-    print(product_details)
-    return render(request, 'products/products.html',{'products':product_details})
+    data = Register.objects.filter(user_email=email_store)
+    print(data)
+    context = {'data':data,'products':product_details}
+    if len(data) is not 0:
+        print('yes')
+        return render(request, 'products/products.html', context)
 
 
 def delete(request, product_id):
     data = Products.objects.get(product_id=product_id)
     data.delete()
     return redirect('product')
+    
