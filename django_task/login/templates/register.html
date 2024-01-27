@@ -7,7 +7,7 @@
     <div class="card-title">
         <h2 class="text-center text-success my-3">Register page<h2>
         <div class="card-body">
-            <form action="{% url 'register' %}" method="POST">
+            <form action="/register/" method="POST">
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="form-group col-lg-4">

@@ -19,6 +19,8 @@
             <table class="table table-bordere-less table-responsive-sm text-sm-start">
                 <thead>
                     <tr class="table-primary text-dark">
+                        <th>Sr. No.</th>
+                        <th>Product Id</th>
                         <th>Product Name</th>
                         <th>Product Price</th>
                         <th>HSN Code</th>
@@ -26,25 +28,28 @@
                         <th>Expiry Date</th>
                         <th>Created Date</th>
                         <th>Updated Date</th>
-                        <th>Updated Date</th>
                         <th>Created By</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for i in create_product reversed %}
+                    {% for i in products %}
                     <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{i.product_id}}</td>
                         <td>{{i.product_name}}</td>
                         <td>{{i.product_price}}</td>
                         <td>{{i.hsn_code}}</td>
                         <td>{{i.manufacture_date}}</td>
                         <td>{{i.expiry_date}}</td>
-                        <td>{{i.created_date}}</td>
-                        <td>{{i.updated_date}}</td>
+                        <td>{{i.created_datetime}}</td>
+                        <td>{{i.updated_datetime}}</td>
                         <td>{{i.created_by}}</td>
                         <td>
-                            <a href="" style=";"><i class='bx bxs-folder-plus bigger-icon'></i></a>
-                            <a href=""><i class='bx bxs-trash bigger-icon'></i></a>
+                            <a href="/product_update/{{i.product_id}}/" class="bigger-icon"><i class='bx bxs-folder-plus bigger-icon'></i></a>
+                            
+
+                            <a href="/delete/{{i.product_id}}/" class="bigger-icon"><i class='bx bxs-trash bigger-icon'></i></a>
                         </td>
                     </tr>
                     {% endfor %}

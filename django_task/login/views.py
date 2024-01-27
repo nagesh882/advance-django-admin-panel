@@ -10,10 +10,6 @@ def generate_otp():
 
 
 def register(request):
-    correct = Register.objects.all()
-    correct = {
-        'correct':correct
-    }
     if request.method == "POST":
         user_name = request.POST.get('user_name')
         user_email = request.POST.get('user_email')
@@ -252,52 +248,46 @@ def update_data(request,user_id):
 
 
 
-def product(request):
-    product_details = Products.objects.all()
-    context = {
-        'products':product_details
-    }
-    print(context['products'])
-    return render(request, 'products/products.html', context)
 
+def product_update(request,product_id):
 
-def product_update(request):
+    correct = Products.objects.get(product_id=product_id)
     if request.method == 'POST':
-        pass
-    return render(request, 'products/product_update.html')
+        product_name = request.POST.get('product_name')
+        product_price = request.POST.get('product_price')
+        hsn_code = request.POST.get('hsn_code')
+        manufacture_date = request.POST.get('manufacture_date')
+        expiry_date = request.POST.get('expiry_date')
+        created_datetime = request.POST.get('created_datetime')
+        updated_datetime = request.POST.get('updated_datetime')
+        created_by_id = request.POST.get('created_by')
+        # create = Register.objects.get(id=created_by_id)
+        create = Register.objects.get(user_id=created_by_id)
 
-
-
-# def product_create(request):
-#     create_product = Products.objects.all()
-#     context = {
-#         'create_product':create_product
-#     }
-#     if request.method == 'POST':
-#         product_name = request.POST.get('product_name')
-#         product_price = request.POST.get('product_price')
-#         hsn_code = request.POST.get('hsn_code')
-#         manufacture_date = request.POST.get('manufacture_date')
-#         expiry_date = request.POST.get('expiry_date')
-#         created_datetime = request.POST.get('created_datetime')
-#         updated_datetime = request.POST.get('updated_datetime')
-
-
-#         save_product = Products(
-#             product_name = product_name,
-#             product_price = product_price,
-#             hsn_code = hsn_code,
-#             manufacture_date = manufacture_date,
-#             expiry_date = expiry_date,
-#             created_datetime = created_datetime,
-#             updated_datetime = updated_datetime
-#         )
-#         save_product.save()
-        
-#         return redirect('product')
+        new_product = Products(
+            product_id=product_id,
+            product_name=product_name,
+            product_price=product_price,
+            hsn_code=hsn_code,
+            manufacture_date=manufacture_date,
+            expiry_date=expiry_date,
+            created_datetime=created_datetime,
+            updated_datetime=updated_datetime,
+            created_by=create,
+        )
+        new_product.save()
+        return redirect('product')
     
-#     return render(request, 'products/product_create.html',context)
+    context = {
+        'companies':Register.objects.all(),
+        'correct':correct
+    }
+        
+    return render(request, 'products/product_update.html',context)
 
+# def product_update(request,product_id):
+#     correct = Products.objects.get(product_id=product_id)
+#     return render(request, 'products/product_update.html',{'correct':correct})
 
 def product_create(request):
     create_product = Products.objects.all()
@@ -310,6 +300,9 @@ def product_create(request):
         expiry_date = request.POST.get('expiry_date')
         created_datetime = request.POST.get('created_datetime')
         updated_datetime = request.POST.get('updated_datetime')
+        created_by_id = request.POST.get('created_by')
+        # create = Register.objects.get(id=created_by_id)
+        create = Register.objects.get(user_id=created_by_id)
 
         new_product = Products(
             product_name=product_name,
@@ -319,18 +312,23 @@ def product_create(request):
             expiry_date=expiry_date,
             created_datetime=created_datetime,
             updated_datetime=updated_datetime,
+            created_by=create
         )
         new_product.save()
         return redirect('product') 
 
-    return render(request, 'products/product_create.html',{'create_product':create_product})
+    return render(request, 'products/product_create.html',{'companies':Register.objects.all()})
 
 
 
+def product(request):
+    product_details = Products.objects.all()
+
+    print(product_details)
+    return render(request, 'products/products.html',{'products':product_details})
 
 
-# def delete2(request, id):
-#     if request.method=="POST":
-#         data2 = manage_student.objects.filter(id=id)
-#         data2.delete()
-#         return redirect("index2") 
+def delete(request, product_id):
+    data = Products.objects.get(product_id=product_id)
+    data.delete()
+    return redirect('product')
