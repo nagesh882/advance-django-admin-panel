@@ -28,6 +28,7 @@
                         <th>Expiry Date</th>
                         <th>Created Date</th>
                         <th>Updated Date</th>
+                        <th>User Email</th>
                         <th>Created By</th>
                         <th>Action</th>
                     </tr>
@@ -44,7 +45,9 @@
                         <td>{{i.expiry_date}}</td>
                         <td>{{i.created_datetime}}</td>
                         <td>{{i.updated_datetime}}</td>
+                        <td>{{ i.created_by.user_email }}</td>
                         <td>{{i.created_by}}</td>
+
                         <td>
                             <a href="/product_update/{{i.product_id}}/" class="bigger-icon"><i class='bx bxs-folder-plus bigger-icon'></i></a>
                             

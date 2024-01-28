@@ -101,12 +101,16 @@ def otp_verify(request):
             context = {'data':data}
             if len(data) is not 0:
                 print('yes')
-                return render(request,'view_profile.html',context)
+                return render(request,'HomePage.html',context)
         else:
             messages.error(request, 'Please enter valid OTP!')
             return redirect('otp_verify')
 
     return render(request, 'otp_verfication.html')
+
+def web_base(request, user_id):
+    data = Register.objects.filter(user_id=user_id)
+    return render(request, 'web_base.html', {'data': data})
 
 
 def home_page(request):
@@ -132,9 +136,13 @@ def user_logout(request):
 
     return redirect('login')
 
+def update(request):
+    data = Register.objects.all()
+    return render(request, 'profile.html',{'data':data})
+
 
 def update(request,user_id):
-    data = Register.objects.get(user_id=user_id)
+    Data_up = Register.objects.get(user_id=user_id)
     if request.method=="POST":
         user_name = request.POST.get('user_name')
         user_email = request.POST.get('user_email')
@@ -151,7 +159,7 @@ def update(request,user_id):
         pin_code = request.POST.get('pin_code')
         user_dob = request.POST.get('user_dob')
 
-        Data = Register(
+        Data_up = Register(
             user_id=user_id,
             user_dob=user_dob,
             user_name =user_name,
@@ -169,10 +177,10 @@ def update(request,user_id):
             pin_code =pin_code
                 
         )
-        Data.save()
+        Data_up.save()
         return redirect('view_profile')
     
-    return render(request, 'profile.html',{'data':data})
+    return render(request, 'profile.html',{'Data_up':Data_up})
 
 
 
@@ -185,7 +193,7 @@ def web_base(request):
     context = {'data':data}
     if len(data) is not 0:
         print('yes')
-        return render(request, 'web_base.html', context)
+        return render(request, 'web_base.html')
 
 
 def view_profile(request):
@@ -268,23 +276,24 @@ def product_create(request):
 
 
 
-# def product(request):
-#     product_details = Products.objects.all()
-
-#     print(product_details)
-#     return render(request, 'products/products.html',{'products':product_details})
 
 def product(request):
-    product_details = Products.objects.all()
     email_store = request.session.get('enter_email')
-    print(email_store)
+    user_data = Register.objects.filter(user_email=email_store)
 
-    data = Register.objects.filter(user_email=email_store)
-    print(data)
-    context = {'data':data,'products':product_details}
-    if len(data) is not 0:
-        print('yes')
-        return render(request, 'products/products.html', context)
+    if user_data.exists():
+        user_id = user_data.first().user_id
+
+        product_details = Products.objects.filter(created_by_id=user_id)
+        
+        context = {
+            'data': user_data,
+            'products': product_details,
+        }
+
+        if len(user_data) != 0:
+            return render(request, 'products/products.html', context)
+
 
 
 def delete(request, product_id):

@@ -23,7 +23,7 @@
                 {% csrf_token %}
                 <div class="form-row col-1g-12">
                     <label class="text-dark">Email</label>
-                    <input type="text" class="form-control" name="enter_email" placeholder="Enter Valid Email Id">
+                    <input required type="text" class="form-control" name="enter_email" placeholder="Enter Valid Email Id">
                 </div>
                 <button type="submit" class="btn btn-primary mx-auto mt-3 form-control">Get OTP</button>
                 <label class="mt-3"><small>Don't have an account? <a href="{% url 'register' %}" style="text-decoration: none"><span>Sign up</span></a><small></label>
