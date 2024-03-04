@@ -5,10 +5,13 @@ from django.core.mail import send_mail
 from django.contrib.auth import logout
 from django.contrib import messages
 
+
+# Generate random otp for login verification
 def generate_otp():
     return str(random.randint(100000, 999999))
 
 
+# Register here users all data
 def register(request):
     if request.method == "POST":
         user_name = request.POST.get('user_name')
@@ -44,13 +47,14 @@ def register(request):
         )
 
         data.save()
-
-
         
         return redirect('login')
 
     return render(request, 'register.html')
 
+
+
+# Send otp on user register email
 
 def login(request):
     context ={}
@@ -88,6 +92,8 @@ def login(request):
     return render(request, "login.html",context)
 
 
+
+# verify here user enter otp and generated otp
 def otp_verify(request):
     if request.method == "POST":
         user_entered_otp = request.POST.get('OTP')
@@ -108,11 +114,13 @@ def otp_verify(request):
 
     return render(request, 'otp_verfication.html')
 
+
+# render user all template data on
 def web_base(request, user_id):
     data = Register.objects.filter(user_id=user_id)
     return render(request, 'web_base.html', {'data': data})
 
-
+# render user data on template
 def home_page(request):
     email_store = request.session.get('enter_email')
     print(email_store)
@@ -124,7 +132,7 @@ def home_page(request):
         print('yes')
         return render(request, 'HomePage.html',context)
 
-
+# I have provided here logout option to user
 def user_logout(request):
     logout(request)
 
@@ -136,11 +144,14 @@ def user_logout(request):
 
     return redirect('login')
 
+
+# render all updated data on template
 def update(request):
     data = Register.objects.all()
     return render(request, 'profile.html',{'data':data})
 
 
+# here user can update their data using this
 def update(request,user_id):
     Data_up = Register.objects.get(user_id=user_id)
     if request.method=="POST":
@@ -183,7 +194,7 @@ def update(request,user_id):
     return render(request, 'profile.html',{'Data_up':Data_up})
 
 
-
+# render here common pase base.html
 def web_base(request):
     email_store = request.session.get('enter_email')
     print(email_store)
@@ -196,6 +207,7 @@ def web_base(request):
         return render(request, 'web_base.html')
 
 
+# detrieve profile data from database as per user id
 def view_profile(request):
     email_store = request.session.get('enter_email')
     print(email_store)
@@ -208,6 +220,57 @@ def view_profile(request):
         return render(request,'view_profile.html',context)
 
 
+# retrieve data of product detail from database
+def product_details(request):
+    email_store = request.session.get('enter_email')
+    user_data = Register.objects.filter(user_email=email_store)
+
+    if user_data.exists():
+        user_id = user_data.first().user_id
+
+        product_details = Products.objects.filter(created_by_id=user_id)
+        
+        context = {
+            'data': user_data,
+            'products': product_details,
+        }
+
+        if len(user_data) != 0:
+            return render(request, 'products/products.html', context)
+
+
+# Create product details 
+def product_create(request):
+    create_product = Products.objects.all()
+    
+    if request.method == 'POST':
+        product_name = request.POST.get('product_name')
+        product_price = request.POST.get('product_price')
+        hsn_code = request.POST.get('hsn_code')
+        manufacture_date = request.POST.get('manufacture_date')
+        expiry_date = request.POST.get('expiry_date')
+        created_datetime = request.POST.get('created_datetime')
+        updated_datetime = request.POST.get('updated_datetime')
+        created_by_id = request.POST.get('created_by')
+        create = Register.objects.get(user_id=created_by_id)
+
+        new_product = Products(
+            product_name=product_name,
+            product_price=product_price,
+            hsn_code=hsn_code,
+            manufacture_date=manufacture_date,
+            expiry_date=expiry_date,
+            created_datetime=created_datetime,
+            updated_datetime=updated_datetime,
+            created_by=create
+        )
+        new_product.save()
+        return redirect('product') 
+
+    return render(request, 'products/product_create.html',{'companies':Register.objects.all()})
+
+
+# Update product data which in database
 def product_update(request,product_id):
 
     correct = Products.objects.get(product_id=product_id)
@@ -244,60 +307,8 @@ def product_update(request,product_id):
     return render(request, 'products/product_update.html',context)
 
 
-
-def product_create(request):
-    create_product = Products.objects.all()
-    
-    if request.method == 'POST':
-        product_name = request.POST.get('product_name')
-        product_price = request.POST.get('product_price')
-        hsn_code = request.POST.get('hsn_code')
-        manufacture_date = request.POST.get('manufacture_date')
-        expiry_date = request.POST.get('expiry_date')
-        created_datetime = request.POST.get('created_datetime')
-        updated_datetime = request.POST.get('updated_datetime')
-        created_by_id = request.POST.get('created_by')
-        create = Register.objects.get(user_id=created_by_id)
-
-        new_product = Products(
-            product_name=product_name,
-            product_price=product_price,
-            hsn_code=hsn_code,
-            manufacture_date=manufacture_date,
-            expiry_date=expiry_date,
-            created_datetime=created_datetime,
-            updated_datetime=updated_datetime,
-            created_by=create
-        )
-        new_product.save()
-        return redirect('product') 
-
-    return render(request, 'products/product_create.html',{'companies':Register.objects.all()})
-
-
-
-
-def product(request):
-    email_store = request.session.get('enter_email')
-    user_data = Register.objects.filter(user_email=email_store)
-
-    if user_data.exists():
-        user_id = user_data.first().user_id
-
-        product_details = Products.objects.filter(created_by_id=user_id)
-        
-        context = {
-            'data': user_data,
-            'products': product_details,
-        }
-
-        if len(user_data) != 0:
-            return render(request, 'products/products.html', context)
-
-
-
+# Delete product details from here
 def delete(request, product_id):
     data = Products.objects.get(product_id=product_id)
     data.delete()
-    return redirect('product')
-    
+    return redirect('product')    

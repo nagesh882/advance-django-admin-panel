@@ -20,15 +20,15 @@
                 <thead>
                     <tr class="table-primary text-dark">
                         <th>Sr. No.</th>
+                        <th>User Name</th>
                         <th>Product Id</th>
                         <th>Product Name</th>
                         <th>Product Price</th>
                         <th>HSN Code</th>
-                        <th>Manufacture Date</th>
-                        <th>Expiry Date</th>
+                        {% comment %} <th>Manufacture Date</th> {% endcomment %}
+                        {% comment %} <th>Expiry Date</th> {% endcomment %}
                         <th>Created Date</th>
-                        <th>Updated Date</th>
-                        <th>User Email</th>
+                        {% comment %} <th>Updated Date</th> {% endcomment %}
                         <th>Created By</th>
                         <th>Action</th>
                     </tr>
@@ -37,16 +37,16 @@
                     {% for i in products %}
                     <tr>
                         <td>{{forloop.counter}}</td>
+                        <td>{{ i.created_by.user_name }}</td>
                         <td>{{i.product_id}}</td>
                         <td>{{i.product_name}}</td>
                         <td>{{i.product_price}}</td>
                         <td>{{i.hsn_code}}</td>
-                        <td>{{i.manufacture_date}}</td>
-                        <td>{{i.expiry_date}}</td>
+                        {% comment %} <td>{{i.manufacture_date}}</td> {% endcomment %}
+                        {% comment %} <td>{{i.expiry_date}}</td> {% endcomment %}
                         <td>{{i.created_datetime}}</td>
-                        <td>{{i.updated_datetime}}</td>
-                        <td>{{ i.created_by.user_email }}</td>
-                        <td>{{i.created_by}}</td>
+                        {% comment %} <td>{{i.updated_datetime}}</td> {% endcomment %}
+                        <td>{{i.created_by.user_email}}</td>
 
                         <td>
                             <a href="/product_update/{{i.product_id}}/" class="bigger-icon"><i class='bx bxs-folder-plus bigger-icon'></i></a>

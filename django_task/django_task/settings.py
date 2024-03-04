@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'login'
+    'rest_framework',
+    'login',
+    'rest_api',
 ]
 
 MIDDLEWARE = [
@@ -74,10 +76,16 @@ WSGI_APPLICATION = 'django_task.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
+# I have used MySQL database for this project
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'admin_dashbord_data',
+        'USER': 'root',
+        'PASSWORD': 'Pass@123',
+        'HOST':'localhost',
+        'PORT':'3306',
     }
 }
 
@@ -128,9 +136,21 @@ STATICFILS_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+# I have used Default SMT email otp sender
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'yashchavanee05@gmail.com'
 EMAIL_HOST_PASSWORD = 'ztvk yolh gzko piyk'
 EMAIL_USE_TLS = True
+
+
+
+# I have used here rest framework inbuilt pagiantion modle in which I have PageNumberPagination
+ 
+REST_FRAMEWORK = {
+
+    'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE':2,
+
+}

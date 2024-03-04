@@ -1,6 +1,7 @@
 from django.db import models
 # import datetime
-# Create your models here.
+
+# Model 1
 class Register(models.Model):
     user_id = models.AutoField(primary_key=True)
     user_name = models.CharField(max_length=100)
@@ -19,11 +20,17 @@ class Register(models.Model):
     country = models.CharField(max_length=100)
     pin_code = models.CharField(max_length=20)
 
+
+    class Meta:
+        verbose_name = "User Details"
+        verbose_name_plural = "User Information"
+
+
     def __str__(self):
-        return f'User ID: {self.user_id}, User Name: {self.user_name}'
+        return f'User ID: {self.user_id} | User Name: {self.user_name}'
     
 
-
+# Model 2
 class Products(models.Model):
     product_id = models.AutoField(primary_key=True)
     product_name = models.CharField(max_length=100)
@@ -33,8 +40,11 @@ class Products(models.Model):
     expiry_date = models.DateField()
     created_datetime = models.DateTimeField(auto_now_add=True)
     updated_datetime = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(Register, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(Register, on_delete=models.CASCADE, related_name='product_buyer_name')
 
+    class Meta:
+        verbose_name = "Product Details"
+        verbose_name_plural = "Product Information"
 
     def __str__(self):
-        return f'Product ID: {self.product_id}, Product Name: {self.product_name}'
+        return f'Product ID: {self.product_id} | Product Name: {self.product_name}'
